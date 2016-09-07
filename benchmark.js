@@ -9,7 +9,7 @@ bench.add('normal: slice, map, filter', function() {
 });
 
 var sliceMapFilter = lazy
-  ('slice', 1, -1)
+  ('slice', [1, -1])
   ('map', x => x + 1)
   ('filter', x => x % 2).run;
 
@@ -19,7 +19,7 @@ bench.add('lazy-o: slice, map, filter', function() {
 
 bench.add('lazy-o: creating lazy function', function() {
   lazy
-    ('slice', 1, -1)
+    ('slice', [1, -1])
     ('map', x => x + 1)
     ('filter', x => x % 2).run(sample);
 });

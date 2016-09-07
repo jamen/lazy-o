@@ -23,26 +23,19 @@ function lazy(value) {
   /**
     * Queue new call on `stack`.
     */
-  function queue(method) {
-    // Handling an array/string queue.
-    if (typeof method === 'string' || method instanceof Token) {
-      var operation = slice.call(arguments);
-      var state = null;
+  function queue(method, input, state) {
+    var type = typeof method;
 
-      // Change to ignore state.
-      if (method[0] === '~') {
-        state = 'skip';
-        method = method.slice(1);
-      }
-
-      // Push results on `stack`.
-      stack.unshift([method, slice.call(operation, 1), state]);
+    // Handling an method/token queue.
+    if (type === 'string' || method instanceof Token) {
+      var args = Array.isArray(input) ? input : [input];
+      stack.unshift([method, args, state]);
     }
 
-    // Handling a function item.
-    else if (typeof method === 'function') stack.unshift([method, null, arguments[1]]);
+    // Handling a plain function queue.
+    else if (type === 'function') stack.unshift([method, null, args]);
 
-    // Return self to chain.
+    // Return self
     return queue;
   }
 
@@ -55,7 +48,7 @@ function lazy(value) {
       var method = operation[0];
       var args = operation[1];
       var state = operation[2];
-      var out = null;
+      var out;
 
       // Handle using native methods.
       if (typeof method === 'string') out = value[method].apply(value, args);
@@ -68,7 +61,7 @@ function lazy(value) {
       else if (typeof method === 'function') out = method(value);
 
       // Set the return to the value.
-      if (out && state !== 'ignore') value = out;
+      if (out && state !== 'skip') value = out;
     }
 
     // Return resulting value.
