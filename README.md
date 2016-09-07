@@ -12,12 +12,12 @@ var foo = lazy
   ('slice', 3, 5) // Queue more calls
   (console.log) // Use plain function
 
-// Run calls on a value with '.run'.
+// Apply calls on a value with '.run'
 foo.run([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
 
-**Note:** If you are creating JS APIs with this, you want to only expose `.run` to the user, so they can't queue extra calls on the chain and call it as a normal function.
+**Note:** If you are creating JS APIs with this, you want to only expose `.run` to the user.  So they can call it like a normal function (`foo()` vs `foo.run()`), and also to prevent them putting extra calls.
 
 ## Installation
 
