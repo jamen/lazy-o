@@ -10,7 +10,7 @@ var $add = lazy.add = new Token('add');
 
 // Turn a value lazy.
 function lazy(value) {
-  // The object we stack calls in.
+  // Stacking function calls in array.
   var stack = [];
 
   // Run `lazy` arguments as first queue.
@@ -33,7 +33,10 @@ function lazy(value) {
       var ignore = false;
 
       // Handle return-skip tilde.
-      if (method[0] === '~' && method = method.slice(1)) ignore = true;
+      if (method[0] === '~') {
+        ignore = true;
+        method = method.slice(1)
+      }
 
       // Push results on `stack`.
       stack.unshift([method, slice.call(operation, 1), ignore]);
