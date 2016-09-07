@@ -3,19 +3,19 @@
 > Painless functional chains that are lazy.
 
 ```js
-var lazy = require('.');
+var lazy = require('lazy-o');
 
 var foo = lazy
   ('map', x => x + 3) // Queue a call
   ('slice', 3, 5) // Queue more calls
   (console.log) // Use plain functions.
 
-// Apply methods with '.use'
+// Run methods on a value with '.use'
 foo.use([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
 
-Use this utility to create functional chains that are lazy.  It can also accept arrays and use other interfering methods in chain calls (like `forEach`).
+This utility is for creating functional chains that are lazy.  It can also accept arrays and use other interfering methods in chain calls (like `forEach`).
 
 ## Installation
 
@@ -28,8 +28,9 @@ $ npm install --save lazy-o
 ### `lazy(fn, [ignore])`
 Queue a plain function to run, the return replaces `value`.
  - `fn` (`Function`): A function that is run with the `value`
+ - `ignore` (`Boolean`): Ignore the return value of this function.
 
-Returns the function again so you can chain calls.
+Returns self, so you can chain more methods.
 
 ```js
 var foo = lazy(x => x + 1).use;
@@ -38,11 +39,12 @@ foo(10);
 // => 11
 ```
 
-### `lazy(method, ...args)`
+### `lazy(method, [...args])`
 Queue a method to run on the value.
  - `name` (`String`|`Token`): The operation you want to queue.
+ - `args`: Arguments to supply to the method during execution.
 
-Returns self, so you can chain more methods.  Also use `~` to ignore return values.
+Returns self, so you can chain more methods.
 
 ```js
 var foo = lazy
@@ -81,7 +83,7 @@ foo([1, 2, 3]);
 // => 6
 ```
 
-This will also still output your values, unaffected by the ignored methods.
+This will still passed your values, unaffected by the ignored ones.
 
 ## License
 
