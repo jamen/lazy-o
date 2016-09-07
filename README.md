@@ -10,12 +10,14 @@ var lazy = require('lazy-o');
 var foo = lazy
   ('map', x => x + 3) // Queue a call
   ('slice', 3, 5) // Queue more calls
-  (console.log) // Use plain functions.
+  (console.log) // Use plain function
 
-// Run methods on a value with '.run'
+// Run calls on a value with '.run'.
 foo.run([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
+
+**Note:** If you are creating JS APIs with this, you want to only expose `.run` to the user, so they can't queue extra calls on the chain and call it as a normal function.
 
 ## Installation
 
