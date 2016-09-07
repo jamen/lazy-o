@@ -22,12 +22,12 @@ function lazy(value) {
         var noReplace = operation[2];
 
         // Handle selection token.
-        if (method === $select) value = value[operation[1][0]];
+        if (method === $select) value = value[args[0]];
 
         // Handle using native methods.
         else {
-          if (noReplace) value[method.slice(1)].apply(value, operation[1]);
-          else value = value[method].apply(value, operation[1]);
+          if (noReplace) value[method].apply(value, args);
+          else value = value[method].apply(value, args);
         }
       }
 

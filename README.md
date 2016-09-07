@@ -1,6 +1,6 @@
 # lazy-o [![NPM version](https://badge.fury.io/js/lazy-o.svg)](https://npmjs.org/package/lazy-o) [![Build Status](https://travis-ci.org/jamen/lazy-o.svg?branch=master)](https://travis-ci.org/jamen/lazy-o)
 
-> Create lazy functional chains that are easily interpolable.
+> Painless functional chains that are lazy.
 
 ```javascript
 var lazy = require('lazy-o');
