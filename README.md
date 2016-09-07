@@ -10,8 +10,8 @@ var foo = lazy
   ('slice', 3, 5) // Queue more calls
   (console.log) // Use plain functions.
 
-// Run methods on a value with '.use'
-foo.use([1, 2, 3, 4, 5, 6]);
+// Run methods on a value with '.run'
+foo.run([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
 
@@ -33,7 +33,7 @@ Queue a plain function to run, the return replaces `value`.
 Returns self, so you can chain more methods.
 
 ```js
-var foo = lazy(x => x + 1).use;
+var foo = lazy(x => x + 1).run;
 
 foo(10);
 // => 11
@@ -49,7 +49,7 @@ Returns self, so you can chain more methods.
 ```js
 var foo = lazy
   ('map', x => x + 1)
-  ('~forEach', console.log).use;
+  ('~forEach', console.log).run;
 
 foo([1, 2, 3]);
 // => 2
@@ -57,13 +57,13 @@ foo([1, 2, 3]);
 // => 4
 ```
 
-### `lazy.use(value)`
+### `lazy.run(value)`
 Run all the queued calls on `value` in order.
 
 Returns the resulting `value` after all the calls.
 
 ```js
-var foo = lazy('map', x => x + (x > 4 ? 1 : -1)).use;
+var foo = lazy('map', x => x + (x > 4 ? 1 : -1)).run;
 
 foo([1, 2, 3, 4, 5, 6, 7, 8]);
 // => [0, 1, 2, 3, 6, 7, 8, 9]
@@ -75,7 +75,7 @@ When you queue a method to run, it will replace `value` with whatever it returns
 ```js
 var foo = lazy
   ('map', x => x * 2)
-  ('~forEach', console.log).use;
+  ('~forEach', console.log).run;
 
 foo([1, 2, 3]);
 // => 2

@@ -15,7 +15,7 @@ function lazy(value) {
 
   // Run first queue and return.
   queue.apply(null, arguments);
-  if (!queue.use) queue.use = use;
+  if (!queue.run) queue.run = run;
   return queue;
 
   // Return the queue function.
@@ -42,7 +42,7 @@ function lazy(value) {
     return queue;
   }
 
-  function use(value) {
+  function run(value) {
     for (var i = stack.length; i--;) {
       var operation = stack[i];
       var method = operation[0];
