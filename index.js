@@ -13,7 +13,7 @@ function lazy(value) {
   // Stacking function calls in array.
   var stack = [];
 
-  // Run `lazy` arguments as first queue.
+  // Run arguments as first queue.
   queue.apply(null, arguments);
 
   // Return queue function with methods.
@@ -35,7 +35,7 @@ function lazy(value) {
       // Handle return-skip tilde.
       if (method[0] === '~') {
         ignore = true;
-        method = method.slice(1)
+        method = method.slice(1);
       }
 
       // Push results on `stack`.
