@@ -17,7 +17,7 @@ foo.run([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
 
-**Note:** If you are creating JS APIs with this, you want to only expose `.run` to the user.  So they can call it like a normal function (`foo()` vs `foo.run()`), and also to prevent them putting extra calls.
+**Note:** If you are creating JS APIs with this, you want to only expose `.run` to the user.  So they can call it like a normal function (`foo()` vs `foo.run()`), and also to prevent them putting extra calls on the lazy stack.
 
 ## Installation
 
