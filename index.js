@@ -38,9 +38,9 @@ function lazy(value) {
     // Add to queue and continue lazyStash.
     var ignore = false;
     var operation = key instanceof Array ? key : slice.call(arguments);
-    if (operation[0] === '~') {
-      ignore = true;
+    if (operation[0][0] === '~') {
       operation[0] = operation[0].slice(1);
+      ignore = true;
     }
     lazyStash.unshift([operation[0], slice.call(operation, 1), ignore]);
     return queue;

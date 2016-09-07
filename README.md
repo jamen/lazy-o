@@ -1,6 +1,6 @@
 # lazy-o [![NPM version](https://badge.fury.io/js/lazy-o.svg)](https://npmjs.org/package/lazy-o) [![Build Status](https://travis-ci.org/jamen/lazy-o.svg?branch=master)](https://travis-ci.org/jamen/lazy-o)
 
-> Create lazy chains with easy interpolability.
+> Create lazy functional chains that are easily interpolable.
 
 ```javascript
 var lazy = require('lazy-o');
@@ -11,6 +11,8 @@ var foo = lazy([1, 2, 3, 4, 5, 6]) // Create a lazy value
   ('~forEach', console.log) // Ignore method output with `~`
   () // Execute with "o" parens.
 ```
+
+Use this utility to create functional chains that are lazy, can accept arrays, and run other non-interfering operations.
 
 ## Installation
 

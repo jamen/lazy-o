@@ -1,7 +1,7 @@
 {
   "name": "lazy-o",
-  "description": "Create lazy chains with easy interpolability.",
-  "version": "0.1.0",
+  "description": "Create lazy functional chains that are easily interpolable.",
+  "version": "0.0.0",
   "homepage": "https://github.com/jamen/lazy-o",
   "author": "Jamen Marz (https://github.com/jamen)",
   "repository": "jamen/lazy-o",
