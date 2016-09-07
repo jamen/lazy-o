@@ -2,8 +2,6 @@
 
 > Painless chains that are lazy, functional, and fast.
 
-A small utility for creating functional chains that are lazy.  It also can handle methods that interrupt chains like `splice` or `forEach` using the [return-skip tilde](#api-tilde).
-
 ```js
 var lazy = require('lazy-o');
 
@@ -16,6 +14,8 @@ var foo = lazy
 foo.run([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
+
+A small utility for creating functional chains that are lazy.  It also can handle methods that interrupt chains like `splice` or `forEach` using the [return-skip tilde](#api-tilde).
 
 **Note:** If you are creating JS APIs with this, you want to only expose `.run` to the user.  So they can call it like a normal function (`foo()` vs `foo.run()`), and also to prevent them putting extra calls on the lazy stack.
 
