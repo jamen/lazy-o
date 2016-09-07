@@ -4,7 +4,6 @@
 
 A small utility for creating functional chains that are lazy.  It also can handle methods that interrupt chains like `splice` or `forEach` using the [return-skip tilde](#api-tilde).
 
-Example of lazy-o:
 ```js
 var lazy = require('lazy-o');
 
