@@ -4,9 +4,9 @@ var slice = Array.prototype.slice;
 lazy.Token = Token;
 module.exports = lazy;
 
-// Tokens
-var $select = lazy.select = new Token('select');
-var $add = lazy.add = new Token('add');
+// constants
+var T_SELECT = lazy.select = new Token('select');
+var T_ADD = lazy.add = new Token('add');
 
 // Turn a value lazy.
 function lazy(value) {
@@ -24,23 +24,22 @@ function lazy(value) {
     * Queue new call on `stack`.
     */
   function queue(method) {
-    // Handling a function item.
-    if (typeof method === 'function') stack.unshift([method, null, arguments[1]]);
-
     // Handling an array/string queue.
-    else if (typeof method === 'string' || method instanceof Token) {
+    if (typeof method === 'string' || method instanceof Token) {
       var operation = slice.call(arguments);
-      var ignore = false;
+      var state = null;
 
-      // Handle return-skip tilde.
       if (method[0] === '~') {
-        ignore = true;
+        state = 'skip';
         method = method.slice(1);
       }
 
       // Push results on `stack`.
-      stack.unshift([method, slice.call(operation, 1), ignore]);
+      stack.unshift([method, slice.call(operation, 1), state]);
     }
+
+    // Handling a function item.
+    else if (typeof method === 'function') stack.unshift([method, null, arguments[1]]);
 
     // Return self to chain.
     return queue;
@@ -50,25 +49,25 @@ function lazy(value) {
     * Run queued calls in `stack` on `value`.
     */
   function run(value) {
-    for (var i = stack.length; i--;) {
+    for (var i = stack.length; i-- > 0;) {
       var operation = stack[i];
       var method = operation[0];
       var args = operation[1];
-      var ignore = operation[2];
+      var state = operation[2];
       var out = null;
 
+      // Handle using native methods.
+      if (typeof method === 'string') out = value[method].apply(value, args);
+
       // Handle tokens.
-      if (method === $select) value = value[args[0]];
-      else if (method === $add) value += args[0];
+      else if (method === T_SELECT) value = value[args[0]];
+      else if (method === T_ADD) value += args[0];
 
       // Handle function supplied.
       else if (typeof method === 'function') out = method(value);
 
-      // Handle using native methods.
-      else out = value[method].apply(value, args);
-
       // Set the return to the value.
-      if (out && !ignore) value = out;
+      if (out && state !== 'ignore') value = out;
     }
 
     // Return resulting value.

@@ -1,6 +1,6 @@
 {
   "name": "lazy-o",
-  "description": "Painless functional chains that are lazy.",
+  "description": "Painless chains that are lazy, functional, and fast.",
   "version": "0.5.0",
   "homepage": "https://github.com/jamen/lazy-o",
   "author": "Jamen Marz (https://github.com/jamen)",
@@ -17,7 +17,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "tape test.js | tap-spec"
+    "test": "tape test.js | tap-spec",
+    "bench": "node benchmark"
   },
   "keywords": [
     "lazy",
@@ -25,6 +26,7 @@
     "utility"
   ],
   "devDependencies": {
+    "benchmark": "^2.1.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0"
   }

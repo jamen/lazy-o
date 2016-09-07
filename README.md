@@ -1,7 +1,10 @@
 # lazy-o [![NPM version](https://badge.fury.io/js/lazy-o.svg)](https://npmjs.org/package/lazy-o) [![Build Status](https://travis-ci.org/jamen/lazy-o.svg?branch=master)](https://travis-ci.org/jamen/lazy-o)
 
-> Painless functional chains that are lazy.
+> Painless chains that are lazy, functional, and fast.
 
+A small utility for creating functional chains that are lazy.  It also can handle methods that interrupt chains like `splice` or `forEach` using the [return-skip tilde](#api-tilde).
+
+Example of lazy-o:
 ```js
 var lazy = require('lazy-o');
 
@@ -14,8 +17,6 @@ var foo = lazy
 foo.run([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
-
-This utility is for creating functional chains that are lazy.  It also can handle methods that interrupt chains like `splice` or `forEach` using the [return-skip tilde](#api-tilde)
 
 ## Installation
 
@@ -69,7 +70,7 @@ foo([1, 2, 3, 4, 5, 6, 7, 8]);
 
 <a name='api-tilde'></a>
 ### Return-skip tilde.
-When you queue a call, when ran it will replace `value` with whatever it returns.  If you just want to run a method on `value` without replacing it (i.e. with `forEach` or `splice`) you can use the "return-skip tilde" prefix (`~`):
+When you queue a call, when ran it will replace `value` with whatever it returns.  If you just want to run a method on `value` without replacing it in the chain (i.e. with `forEach` or `splice`) you can use the "return-skip tilde" prefix (`~`):
 
 ```js
 var foo = lazy
@@ -86,6 +87,10 @@ foo([1, 2, 3]);
 ```
 
 This will pass your values on in the chain, unerrored by the return-skipped calls.
+
+## Meta
+ - `npm test`: Run tests.
+ - `npm run bench`: Run benchmarks.
 
 ## License
 
