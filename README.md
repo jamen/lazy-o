@@ -15,7 +15,7 @@ foo.run([1, 2, 3, 4, 5, 6]);
 // => [ 7, 8 ]
 ```
 
-This utility is for creating functional chains that are lazy.  It can also accept arrays and use other interfering methods in chain calls (like `forEach`).
+This utility is for creating functional chains that are lazy.  It also can handle methods that interrupt chains like `splice` or `forEach` using the [return-skip tilde](#api-tilde)
 
 ## Installation
 
@@ -49,12 +49,10 @@ Returns self, so you can chain more methods.
 ```js
 var foo = lazy
   ('map', x => x + 1)
-  ('~forEach', console.log).run;
+  ('slice', 1).run;
 
 foo([1, 2, 3]);
-// => 2
-// => 3
-// => 4
+// => [3, 4]
 ```
 
 ### `lazy.run(value)`
@@ -69,21 +67,25 @@ foo([1, 2, 3, 4, 5, 6, 7, 8]);
 // => [0, 1, 2, 3, 6, 7, 8, 9]
 ```
 
-### Ignoring method output.
-When you queue a method to run, it will replace `value` with whatever it returns.  If you just want to run a method on `value` without replacing it (i.e. with `forEach`) you can use the "ignore symbol", a.k.a. the tilde (`~`):
+<a name='api-tilde'></a>
+### Return-skip tilde.
+When you queue a call, when ran it will replace `value` with whatever it returns.  If you just want to run a method on `value` without replacing it (i.e. with `forEach` or `splice`) you can use the "return-skip tilde" prefix (`~`):
 
 ```js
 var foo = lazy
   ('map', x => x * 2)
-  ('~forEach', console.log).run;
+  ('~forEach', console.log).run
+  ('slice', 1);
 
 foo([1, 2, 3]);
+// => [2, 3]
+// logs:
 // => 2
 // => 4
 // => 6
 ```
 
-This will still passed your values, unaffected by the ignored ones.
+This will pass your values on in the chain, unerrored by the return-skipped calls.
 
 ## License
 
