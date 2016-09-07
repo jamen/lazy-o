@@ -32,9 +32,9 @@ Queue a plain function to run, the return replaces `value`.
 Returns the function again so you can chain calls.
 
 ```js
-var foo = lazy(x => x + 1);
+var foo = lazy(x => x + 1).use;
 
-foo.use(10);
+foo(10);
 // => 11
 ```
 
@@ -47,9 +47,9 @@ Returns self, so you can chain more methods.  Also use `~` to ignore return valu
 ```js
 var foo = lazy
   ('map', x => x + 1)
-  ('~forEach', console.log);
+  ('~forEach', console.log).use;
 
-foo.use([1, 2, 3]);
+foo([1, 2, 3]);
 // => 2
 // => 3
 // => 4
@@ -61,9 +61,9 @@ Run all the queued calls on `value` in order.
 Returns the resulting `value` after all the calls.
 
 ```js
-var foo = lazy('map', x => x + (x > 4 ? 1 : -1));
+var foo = lazy('map', x => x + (x > 4 ? 1 : -1)).use;
 
-foo.use([1, 2, 3, 4, 5, 6, 7, 8]);
+foo([1, 2, 3, 4, 5, 6, 7, 8]);
 // => [0, 1, 2, 3, 6, 7, 8, 9]
 ```
 
@@ -71,10 +71,14 @@ foo.use([1, 2, 3, 4, 5, 6, 7, 8]);
 When you queue a method to run, it will replace `value` with whatever it returns.  If you just want to run a method on `value` without replacing it (i.e. with `forEach`) you can use the "ignore symbol", a.k.a. the tilde (`~`):
 
 ```js
-var foo = lazy([1, 2, 3])
+var foo = lazy
   ('map', x => x * 2)
-  ('~forEach', console.log)
-  ();
+  ('~forEach', console.log).use;
+
+foo([1, 2, 3]);
+// => 2
+// => 4
+// => 6
 ```
 
 This will also still output your values, unaffected by the ignored methods.
