@@ -33,7 +33,7 @@ function lazy(value) {
     }
 
     // Handling a plain function queue.
-    else if (type === 'function') stack.unshift([method, null, args]);
+    else if (type === 'function') stack.unshift([method, null, input]);
 
     // Return self
     return queue;
