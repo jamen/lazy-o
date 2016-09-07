@@ -17,6 +17,13 @@ bench.add('lazy-o: slice, map, filter', function() {
   sliceMapFilter(sample);
 });
 
+bench.add('lazy-o: creating lazy function', function() {
+  lazy
+    ('slice', 1, -1)
+    ('map', x => x + 1)
+    ('filter', x => x % 2).run(sample);
+});
+
 // Setup logger.
 bench.on('cycle', function(event) {
   console.log(String(event.target));

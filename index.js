@@ -29,6 +29,7 @@ function lazy(value) {
       var operation = slice.call(arguments);
       var state = null;
 
+      // Change to ignore state.
       if (method[0] === '~') {
         state = 'skip';
         method = method.slice(1);
