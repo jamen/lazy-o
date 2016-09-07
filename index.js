@@ -1,33 +1,41 @@
 var Token = function Token() {};
 var slice = Array.prototype.slice;
 
+lazy.Token = Token;
 module.exports = lazy;
 
 // Tokens
 var $select = lazy.select = new Token();
+var $get = lazy.get = new Token();
 
 // Turn a value lazy.
 function lazy(value) {
   // The object we lazily stash operations in.
-  var lazyStash = [];
+  var stack = [];
 
   // Return the queue function.
   return function queue(key) {
-    // Run lazyStash
+    // Run the queued operations.
     if (!key) {
-      for (var i = lazyStash.length; i--;) {
-        var operation = lazyStash[i];
+      for (var i = stack.length; i--;) {
+        var operation = stack[i];
         var method = operation[0];
         var args = operation[1];
-        var noReplace = operation[2];
+        var ignore = operation[2];
 
-        // Handle selection token.
+        // Handle "select" token
         if (method === $select) value = value[args[0]];
+
+        // Handle "run" token.
+        else if (method === $get) {
+          var out = args[0](value);
+          if (!ignore && out || ignore === false) value = out;
+        }
 
         // Handle using native methods.
         else {
-          if (noReplace) value[method].apply(value, args);
-          else value = value[method].apply(value, args);
+          var out = value[method].apply(value, args);
+          if (!ignore && out || ignore === false) value = out;
         }
       }
 
@@ -35,19 +43,24 @@ function lazy(value) {
       return value;
     }
 
-    // Add to queue and continue lazyStash.
-    var ignore = false;
-    var operation = key instanceof Array ? key : slice.call(arguments);
-    if (operation[0][0] === '~') {
-      operation[0] = operation[0].slice(1);
-      ignore = true;
+    // Handling an array/string queue.
+    else if (typeof key === 'string' || key instanceof Token || key instanceof Array) {
+      var ignore = false;
+      var operation = key instanceof Array ? key : slice.call(arguments);
+      var method = operation[0];
+      if (method[0] === '~') {
+        method = method.slice(1);
+        ignore = true;
+      }
+
+      stack.unshift([method, slice.call(operation, 1), ignore]);
     }
-    lazyStash.unshift([operation[0], slice.call(operation, 1), ignore]);
+
+    // Handling a function queue
+    else if (typeof key === 'function') {
+      stack.unshift([$get, [key], arguments[1]]);
+    }
+
     return queue;
   }
-};
-
-// Checking if a value is a token.
-lazy.isToken = function isToken(value) {
-  return value === $select;
 };
