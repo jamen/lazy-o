@@ -3,7 +3,7 @@
 > Painless chains that are lazy, functional, and fast.
 
 ```js
-var lazy = require('lazy-o');
+var lazy = require('lazy-o')
 
 var foo = lazy
   ('map', x => x + 3) // Queue a call
@@ -11,11 +11,11 @@ var foo = lazy
   (console.log) // Use plain function
 
 // Apply calls on a value with '.run'
-foo.run([1, 2, 3, 4, 5, 6]);
+foo.run([1, 2, 3, 4, 5, 6])
 // => [ 7, 8 ]
 ```
 
-A small utility for creating functional chains that are lazy.  It also can handle methods that interrupt chains like `splice` or `forEach` using the [return-skip tilde](#api-tilde).
+A small utility for creating execution chains that are functional.
 
 **Note:** If you are creating JS APIs with this, you want to only expose `.run` to the user.  So they can call it like a normal function (`foo()` vs `foo.run()`), and also to prevent them putting extra calls on the lazy stack.
 
@@ -27,20 +27,6 @@ $ npm install --save lazy-o
 
 ## API
 
-### `lazy(fn, [ignore])`
-Queue a plain function to run, the return replaces `value`.
- - `fn` (`Function`): A function that is run with the `value`
- - `ignore` (`Boolean`): Ignore the return value of this function.
-
-Returns self, so you can chain more methods.
-
-```js
-var foo = lazy(x => x + 1).run;
-
-foo(10);
-// => 11
-```
-
 ### `lazy(method, [...args])`
 Queue a method to run on the value.
  - `name` (`String`|`Token`): The operation you want to queue.
@@ -51,43 +37,46 @@ Returns self, so you can chain more methods.
 ```js
 var foo = lazy
   ('map', x => x + 1)
-  ('slice', 1).run;
+  ('slice', 1).run
 
-foo([1, 2, 3]);
+foo([1, 2, 3])
 // => [3, 4]
 ```
 
-### `lazy.run(value)`
-Run all the queued calls on `value` in order.
+### `lazy(fn)`
+Queue a plain function to run, the return replaces `value`.
+ - `fn` (`Function`): A function that is run with the `value`
 
-Returns the resulting `value` after all the calls.
+Returns self, so you can chain more methods.
 
 ```js
-var foo = lazy('map', x => x + (x > 4 ? 1 : -1)).run;
+var foo = lazy(x => x + 1).run
 
-foo([1, 2, 3, 4, 5, 6, 7, 8]);
+foo(10)
+// => 11
+```
+
+### `lazy.run(value)
+### `lazy.run(...values)`
+Run all the queued calls on `value` or `values`.
+
+Returns the resulting a modified value or array of values after all the calls have been applied.
+
+Example with a single value:
+```js
+var foo = lazy('map', x => x + (x > 4 ? 1 : -1)).run
+
+foo([1, 2, 3, 4, 5, 6, 7, 8])
 // => [0, 1, 2, 3, 6, 7, 8, 9]
 ```
 
-<a name='api-tilde'></a>
-### Return-skip tilde.
-When you queue a call, when ran it will replace `value` with whatever it returns.  If you just want to run a method on `value` without replacing it in the chain (i.e. with `forEach` or `splice`) you can use the "return-skip tilde" prefix (`~`):
-
+Multiple values:
 ```js
-var foo = lazy
-  ('map', x => x * 2)
-  ('~forEach', console.log).run
-  ('slice', 1);
+var bar = lazy('slice', 1, -1)('toUpperCase').run
 
-foo([1, 2, 3]);
-// => [2, 3]
-// logs:
-// => 2
-// => 4
-// => 6
+bar.run('foobar', 'bazqux', 'hello world')
+// => ['OOBA', 'AZQU', 'ELLO WORL']
 ```
-
-This will pass your values on in the chain, unerrored by the return-skipped calls.
 
 ## Meta
  - `npm test`: Run tests.
