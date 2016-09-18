@@ -56,7 +56,7 @@ foo(10)
 // => 11
 ```
 
-### `lazy.run(value)
+### `lazy.run(value)`
 ### `lazy.run(...values)`
 Run all the queued calls on `value` or `values`.
 
